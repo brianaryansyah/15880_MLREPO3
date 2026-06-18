@@ -1,0 +1,8 @@
+path: D:/UDINUS/SEMESTER 4/PEMBELAJARAN MESIN/SiCASA/dataset
+train: images/train
+val: images/val
+test: images/test
+nc: 2
+names:
+- Cataract
+- Normal

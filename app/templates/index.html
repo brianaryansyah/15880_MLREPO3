@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiCASA — Sistem Deteksi Dini Katarak</title>
+    <meta name="description" content="SiCASA adalah sistem deteksi dini katarak berbasis Kecerdasan Buatan menggunakan YOLOv8. Upload foto mata dan dapatkan analisis instan.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="#" class="nav-brand">
+            <span class="brand-icon">👁️</span>
+            <span class="brand-text">Si<span class="brand-accent">CASA</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="#tentang" class="nav-link">Tentang</a>
+            <a href="#cara-pakai" class="nav-link">Cara Pakai</a>
+            <a href="#deteksi" class="nav-link">Deteksi</a>
+            <a href="#faq" class="nav-link">FAQ</a>
+        </div>
+        <div class="nav-status">
+            <span class="status-dot {% if model_loaded %}status-online{% else %}status-offline{% endif %}"></span>
+            <span class="status-text">{% if model_loaded %}Model Aktif{% else %}Model Belum Siap{% endif %}</span>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero" id="hero">
+    <div class="hero-bg">
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
+        <div class="hero-orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+    
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span>Sistem AI Deteksi Dini Katarak</span>
+        </div>
+        
+        <h1 class="hero-title">
+            Deteksi <span class="text-gradient">Katarak</span><br>
+            Lebih Cepat & Akurat
+        </h1>
+        
+        <p class="hero-subtitle">
+            SiCASA menggunakan teknologi <strong>YOLOv8 Deep Learning</strong> untuk 
+            menganalisis foto mata dan mendeteksi tanda-tanda katarak secara otomatis 
+            hanya dalam hitungan detik.
+        </p>
+        
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🎯</span>
+                <span class="stat-label">YOLOv8s</span>
+                <span class="stat-desc">Model AI</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-icon">⚡</span>
+                <span class="stat-label">&lt;1 Detik</span>
+                <span class="stat-desc">Analisis</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-icon">🔒</span>
+                <span class="stat-label">Lokal</span>
+                <span class="stat-desc">Privasi Terjaga</span>
+            </div>
+        </div>
+        
+        <div class="hero-actions">
+            <a href="#deteksi" class="btn btn-primary">
+                <span>Mulai Deteksi</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#tentang" class="btn btn-ghost">
+                <span>Pelajari Lebih Lanjut</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="hero-visual">
+        <div class="eye-card">
+            <div class="eye-ring ring-1"></div>
+            <div class="eye-ring ring-2"></div>
+            <div class="eye-ring ring-3"></div>
+            <div class="eye-icon">👁️</div>
+            <div class="scan-line"></div>
+            <div class="detection-box box-1">
+                <div class="det-label">Katarak</div>
+                <div class="det-conf">94.2%</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TENTANG KATARAK ===== -->
+<section class="section tentang" id="tentang">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Edukasi</span>
+            <h2 class="section-title">Apa itu <span class="text-gradient">Katarak?</span></h2>
+            <p class="section-desc">
+                Katarak adalah kekeruhan pada lensa mata yang menyebabkan penglihatan kabur. 
+                Deteksi dini sangat penting untuk mencegah kebutaan permanen.
+            </p>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card" data-delay="0">
+                <div class="info-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">⚠️</div>
+                <h3>Gejala Katarak</h3>
+                <ul class="info-list">
+                    <li>Penglihatan kabur atau buram</li>
+                    <li>Sensitif terhadap cahaya terang</li>
+                    <li>Warna terlihat pudar/kusam</li>
+                    <li>Kesulitan melihat di malam hari</li>
+                    <li>Melihat lingkaran cahaya (halo)</li>
+                </ul>
+            </div>
+            
+            <div class="info-card" data-delay="100">
+                <div class="info-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">🔬</div>
+                <h3>Penyebab</h3>
+                <ul class="info-list">
+                    <li>Penuaan alami (paling umum)</li>
+                    <li>Paparan sinar UV berlebihan</li>
+                    <li>Diabetes mellitus</li>
+                    <li>Riwayat cedera mata</li>
+                    <li>Faktor genetik/keturunan</li>
+                </ul>
+            </div>
+            
+            <div class="info-card" data-delay="200">
+                <div class="info-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">💊</div>
+                <h3>Penanganan</h3>
+                <ul class="info-list">
+                    <li>Operasi fakoemulsifikasi</li>
+                    <li>Pemasangan lensa intraokular (IOL)</li>
+                    <li>Deteksi dan penanganan dini</li>
+                    <li>Konsultasi dokter mata rutin</li>
+                    <li>Penggunaan kacamata khusus</li>
+                </ul>
+            </div>
+            
+            <div class="info-card" data-delay="300">
+                <div class="info-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">🛡️</div>
+                <h3>Pencegahan</h3>
+                <ul class="info-list">
+                    <li>Gunakan kacamata UV protection</li>
+                    <li>Kontrol gula darah (bagi diabetesi)</li>
+                    <li>Konsumsi antioksidan (vitamin C, E)</li>
+                    <li>Berhenti merokok</li>
+                    <li>Pemeriksaan mata berkala</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CARA PAKAI ===== -->
+<section class="section cara-pakai" id="cara-pakai">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Panduan</span>
+            <h2 class="section-title">Cara <span class="text-gradient">Menggunakan</span> SiCASA</h2>
+            <p class="section-desc">Hanya 3 langkah mudah untuk mendapatkan hasil deteksi</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">01</div>
+                <div class="step-icon">📸</div>
+                <h3>Upload Foto Mata</h3>
+                <p>Upload foto fundus mata atau foto mata yang jelas. Format yang didukung: JPG, PNG, WEBP.</p>
+            </div>
+            
+            <div class="step-arrow">→</div>
+            
+            <div class="step-item">
+                <div class="step-number">02</div>
+                <div class="step-icon">🤖</div>
+                <h3>AI Menganalisis</h3>
+                <p>Model YOLOv8s memproses gambar dan mendeteksi tanda-tanda katarak menggunakan GPU.</p>
+            </div>
+            
+            <div class="step-arrow">→</div>
+            
+            <div class="step-item">
+                <div class="step-number">03</div>
+                <div class="step-icon">📋</div>
+                <h3>Lihat Hasil</h3>
+                <p>Dapatkan hasil deteksi lengkap dengan bounding box, tingkat kepercayaan, dan rekomendasi.</p>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <span class="warning-icon">⚕️</span>
+            <div>
+                <strong>Disclaimer Medis:</strong> SiCASA adalah alat bantu skrining awal berbasis AI 
+                dan <strong>bukan pengganti diagnosis dokter</strong>. Selalu konsultasikan dengan 
+                dokter mata profesional untuk diagnosis dan penanganan yang tepat.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DETEKSI SECTION ===== -->
+<section class="section deteksi-section" id="deteksi">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Deteksi AI</span>
+            <h2 class="section-title">Mulai <span class="text-gradient">Deteksi</span> Sekarang</h2>
+            <p class="section-desc">Upload foto mata untuk dianalisis oleh sistem AI SiCASA</p>
+        </div>
+        
+        {% if not model_loaded %}
+        <div class="model-warning">
+            <span>⚠️</span>
+            <div>
+                <strong>Model Belum Tersedia</strong><br>
+                {{ model_status }}. Jalankan notebook training terlebih dahulu, lalu salin 
+                <code>best.pt</code> ke folder <code>app/</code>.
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="detection-layout">
+            <!-- Upload Panel -->
+            <div class="upload-panel">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">
+                        <strong>Drag & Drop foto mata di sini</strong>
+                        <span>atau klik untuk memilih file</span>
+                    </div>
+                    <div class="upload-formats">JPG • PNG • WEBP • BMP</div>
+                    <div class="upload-size">Maksimal 16MB</div>
+                    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.bmp" hidden>
+                </div>
+                
+                <!-- Preview area -->
+                <div class="preview-area" id="previewArea" style="display:none;">
+                    <img id="previewImg" src="" alt="Preview gambar yang dipilih">
+                    <button class="btn-remove" id="btnRemove" title="Hapus gambar">✕</button>
+                    <div class="preview-info" id="previewInfo"></div>
+                </div>
+                
+                <!-- Advanced Settings -->
+                <div class="settings-panel">
+                    <button class="settings-toggle" id="settingsToggle">
+                        ⚙️ Pengaturan Lanjutan
+                        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    
+                    <div class="settings-content" id="settingsContent">
+                        <div class="setting-item">
+                            <label for="confSlider">
+                                Confidence Threshold: <strong id="confValue">25%</strong>
+                            </label>
+                            <input type="range" id="confSlider" min="1" max="95" value="25" class="slider">
+                            <div class="slider-desc">Semakin tinggi = deteksi lebih ketat</div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="iouSlider">
+                                IoU Threshold: <strong id="iouValue">45%</strong>
+                            </label>
+                            <input type="range" id="iouSlider" min="1" max="95" value="45" class="slider">
+                            <div class="slider-desc">Kontrol overlap antar bounding box</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tombol Deteksi -->
+                <button class="btn btn-primary btn-detect" id="btnDetect" disabled>
+                    <span class="btn-text">🔍 Mulai Deteksi</span>
+                    <div class="btn-spinner" style="display:none;"></div>
+                </button>
+            </div>
+            
+            <!-- Hasil Panel -->
+            <div class="result-panel" id="resultPanel">
+                <div class="result-placeholder" id="resultPlaceholder">
+                    <div class="placeholder-icon">🎯</div>
+                    <h3>Hasil deteksi akan muncul di sini</h3>
+                    <p>Upload gambar mata dan klik tombol "Mulai Deteksi" untuk melihat hasilnya</p>
+                </div>
+                
+                <div class="result-content" id="resultContent" style="display:none;">
+                    <!-- Status utama -->
+                    <div class="result-status" id="resultStatus">
+                        <div class="status-icon-large" id="statusIconLarge"></div>
+                        <div class="status-info">
+                            <h3 id="statusTitle"></h3>
+                            <p id="statusDesc"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Gambar hasil -->
+                    <div class="result-images">
+                        <div class="result-img-container">
+                            <span class="img-label">Original</span>
+                            <img id="originalImg" src="" alt="Gambar original" class="result-img">
+                        </div>
+                        <div class="result-img-container">
+                            <span class="img-label">Hasil Deteksi AI</span>
+                            <img id="detectionImg" src="" alt="Hasil deteksi" class="result-img">
+                        </div>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="result-stats">
+                        <div class="result-stat">
+                            <span class="stat-number" id="numDetections">0</span>
+                            <span class="stat-label">Terdeteksi</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="stat-number" id="inferenceTime">0</span>
+                            <span class="stat-label">ms Proses</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="stat-number" id="deviceUsed">GPU</span>
+                            <span class="stat-label">Perangkat</span>
+                        </div>
+                    </div>
+                    
+                    <!-- List Deteksi -->
+                    <div class="detection-list" id="detectionList"></div>
+                    
+                    <!-- Rekomendasi -->
+                    <div class="recommendation" id="recommendation"></div>
+                    
+                    <!-- Tombol aksi -->
+                    <div class="result-actions">
+                        <button class="btn btn-ghost" id="btnReset">🔄 Deteksi Lagi</button>
+                        <button class="btn btn-primary" id="btnDownload">⬇️ Unduh Hasil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section faq-section" id="faq">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">FAQ</span>
+            <h2 class="section-title">Pertanyaan yang <span class="text-gradient">Sering Ditanyakan</span></h2>
+        </div>
+        
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" id="faq1">
+                    Apakah SiCASA bisa menggantikan dokter mata?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer" id="faq1-answer">
+                    Tidak. SiCASA adalah alat bantu skrining berbasis AI yang dirancang untuk membantu deteksi dini. 
+                    Hasil dari SiCASA <strong>bukan diagnosis medis</strong>. Selalu konsultasikan dengan dokter 
+                    mata profesional untuk mendapatkan diagnosis dan penanganan yang tepat.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" id="faq2">
+                    Foto seperti apa yang cocok untuk digunakan?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer" id="faq2-answer">
+                    Model ini dilatih menggunakan gambar fundus mata (retinal fundus image). 
+                    Semakin jelas foto mata, semakin akurat hasilnya. Hindari foto yang blur, 
+                    terlalu gelap, atau sebagian besar tertutup.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" id="faq3">
+                    Apakah data foto saya tersimpan di server?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer" id="faq3-answer">
+                    SiCASA berjalan sepenuhnya secara lokal di komputer Anda. Foto yang diupload 
+                    tersimpan sementara hanya di folder lokal <code>app/static/uploads/</code> 
+                    dan akan dibersihkan secara otomatis. Tidak ada data yang dikirim ke server luar.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" id="faq4">
+                    Teknologi apa yang digunakan?
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer" id="faq4-answer">
+                    SiCASA menggunakan <strong>YOLOv8s (You Only Look Once v8 Small)</strong> 
+                    dari Ultralytics sebagai model deteksi objek, ditraining dengan dataset katarak 
+                    dari Roboflow. Backend menggunakan <strong>Flask (Python)</strong> dan 
+                    inferensi dipercepat dengan <strong>GPU NVIDIA via CUDA</strong>.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="brand-icon">👁️</span>
+                <span class="brand-text">Si<span class="brand-accent">CASA</span></span>
+            </div>
+            <p class="footer-desc">
+                Sistem Deteksi Dini Katarak berbasis AI<br>
+                Universitas Dian Nuswantoro — Pembelajaran Mesin 2025/2026
+            </p>
+            <div class="footer-tech">
+                <span class="tech-badge">YOLOv8</span>
+                <span class="tech-badge">PyTorch</span>
+                <span class="tech-badge">Flask</span>
+                <span class="tech-badge">CUDA</span>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>⚠️ Disclaimer: Aplikasi ini hanya untuk tujuan edukasi dan penelitian. Bukan pengganti diagnosis medis profesional.</p>
+            <p>© 2025 SiCASA — UDINUS Pembelajaran Mesin</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== TOAST NOTIFICATION ===== -->
+<div class="toast" id="toast">
+    <span id="toastMsg">Pesan</span>
+</div>
+
+<!-- ===== LOADING OVERLAY ===== -->
+<div class="loading-overlay" id="loadingOverlay" style="display:none;">
+    <div class="loading-card">
+        <div class="loading-eye">👁️</div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Menganalisis gambar...</div>
+        <div class="loading-sub">YOLOv8s sedang memproses</div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

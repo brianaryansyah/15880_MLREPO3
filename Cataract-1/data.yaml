@@ -1,0 +1,13 @@
+names:
+- Cataract
+- Normal
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: cataract-lt8ek-zefeq
+  url: https://universe.roboflow.com/brian-rqnbs/cataract-lt8ek-zefeq/dataset/1
+  version: 1
+  workspace: brian-rqnbs
+test: ../test/images
+train: ../train/images
+val: ../valid/images
