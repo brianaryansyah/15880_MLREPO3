@@ -5,7 +5,6 @@
 > * **Nama**: Brian Aryansyah Pamungkas
 > * **NIM**: A11.2024.15880
 > * **Kelompok**: A11.4405
-> * **Dosen Pengampu / Reviewer**: Tim Dosen Pemelajaran Mesin UDINUS
 
 ---
 
@@ -62,15 +61,47 @@ graph TD
 
 ---
 
+## 📈 Analisis Performa & Kurva Pelatihan Model
+
+Pengembangan DEDIKAT melibatkan pemantauan metrik evaluasi secara ketat selama pelatihan model deep learning guna menjamin akurasi diagnosis medis yang aman bagi pasien:
+
+### 1. Kurva Pelatihan & Loss YOLOv8s
+![Kurva Latih YOLOv8s](app/static/images/eval_yolov8_training.png)
+* **Analisis**: Kurva *Loss* lokalisasi kotak pembatas (*box_loss*) dan klasifikasi (*cls_loss*) pada set pelatihan maupun validasi menunjukkan penurunan yang konvergen dan stabil hingga epoch 130. Model berhasil mencapai nilai **mAP50** sebesar **96.83%**, mengindikasikan sensitivitas dan akurasi pelokalisasian pupil mata yang mengalami katarak sangat presisi.
+
+### 2. Kurva Pelatihan ResNet-50
+![Kurva Latih ResNet-50](app/static/images/eval_resnet_training.png)
+* **Analisis**: Model klasifikasi gambar *end-to-end* ResNet-50 dilatih dan dipantau tingkat keakuratannya. Kurva menunjukkan laju *Accuracy* validasi melonjak cepat hingga menstabilkan diri pada akurasi puncak sebesar **98.73%**. Tingkat *Cross-Entropy Loss* yang terus menurun mendekati angka nol membuktikan model memiliki pemahaman klasifikasi visual yang optimal dan bebas dari tanda-tanda *overfitting*.
+
+### 3. Confusion Matrix (ResNet-50)
+![Confusion Matrix ResNet-50](app/static/images/eval_confusion_matrix.png)
+* **Analisis**: Confusion Matrix memperlihatkan performa luar biasa dalam memisahkan kelas normal dan katarak. Jumlah prediksi benar (True Positive dan True Negative) mendominasi secara signifikan, dengan tingkat kesalahan *False Negative* (pasien katarak yang terdiagnosis normal) yang mendekati nol. Hal ini sangat krusial dalam domain diagnosis medis untuk mencegah kesalahan kelalaian penanganan klinis.
+
+### 4. Kurva ROC (Receiver Operating Characteristic) & Precision-Recall (PR)
+![Kurva ROC](app/static/images/eval_roc_curve.png)
+![Kurva Precision-Recall](app/static/images/eval_pr_curve.png)
+* **Analisis**: Kurva ROC menunjukkan nilai **Area Under Curve (AUC)** mencapai **99.73%** untuk model ResNet-50, membuktikan performa pembeda kelas yang sangat unggul di berbagai ambang batas klasifikasi. Ditambah dengan kurva Precision-Recall yang melengkung tajam ke arah kanan atas, ini membuktikan model tetap mempertahankan tingkat kebenaran deteksi yang tinggi (Precision) meskipun sensitivitas penemuan objek (Recall) dipaksa ke tingkat maksimum.
+
+### 5. Analisis Tingkat Penting Fitur (Random Forest Feature Importance)
+![Feature Importance Random Forest](app/static/images/eval_rf_feature_importance.png)
+* **Analisis**: Grafik ini memetakan kontribusi fitur citra yang diekstraksi terhadap keputusan model ensembel Random Forest. Fitur intensitas warna dan tekstur kelabu di area spasial tengah (pupil) terbukti memiliki signifikansi kontribusi tertinggi. Hal ini membuktikan keputusan pengelompokan status katarak oleh kecerdasan buatan didasarkan pada perubahan opasitas kelensa pupil secara biologis, bukan bias latar belakang gambar.
+
+---
+
 ## 📂 Repository Layout
 
 Susunan folder dan file di dalam repositori GitHub ini telah dirapikan agar memenuhi standar struktur proyek rekayasa perangkat lunak profesional:
 
 ```text
+├── archive/                    # Folder arsip riwayat pelatihan & file riset lama
+│   ├── base_models/            # Berkas model YOLOv8s & YOLOv8n asli (Base weights)
+│   ├── plots/                  # Grafik plot riset data latih & kurva visualisasi lama
+│   ├── runs/                   # Folder log & riwayat epoch pelatihan YOLOv8
+│   └── scripts/                # Program utilitas pipeline pemrosesan lama
 ├── app/
 │   ├── app.py                  # Backend Flask Server (Logika Router & API Deteksi)
-│   ├── best.pt                 # File Bobot Model YOLOv8s (Object Detection)
-│   ├── resnet50_best.pth       # File Bobot Model ResNet-50 (Image Classification)
+│   ├── best.pt                 # File Bobot Model YOLOv8s Terlatih (Object Detection)
+│   ├── resnet50_best.pth       # File Bobot Model ResNet-50 Terlatih (Image Classification)
 │   ├── templates/
 │   │   └── index.html          # File Web Template Utama Flask (Bebas emoji, responsif)
 │   ├── static/
@@ -78,16 +109,15 @@ Susunan folder dan file di dalam repositori GitHub ini telah dirapikan agar meme
 │   │   │   └── style.css       # Lembar Gaya CSS (Skema Warna Medis Biru-Putih)
 │   │   ├── js/
 │   │   │   └── main.js         # Logika JS (Tab, Counter, Slider, dan AJAX)
-│   │   └── images/             # Gambar riset (EDA, XAI, Curves)
+│   │   └── images/             # Gambar riset & kurva evaluasi model terbaru
 │   │       └── samples/        # Contoh citra klinis katarak & normal untuk uji cepat
-│   ├── copy_assets.py          # Utilitas untuk memindahkan gambar visualisasi riset
-│   └── copy_samples.py         # Utilitas untuk memindahkan citra contoh uji
+│   └── copy_assets.py          # Utilitas untuk memindahkan gambar visualisasi riset
 ├── .streamlit/
 │   └── config.toml             # Berkas konfigurasi tema warna Streamlit (Light Mode)
 ├── docs/
 │   └── screenshots/            # Berkas gambar dokumentasi web untuk README.md
 ├── .gitignore                  # Berkas pengecualian Git (Mengabaikan file sampah & venv)
-├── requirements.txt            # Berkas daftar dependensi pustaka Python
+├── requirements.txt            # Berkas daftar dependensi pustaka Python (Streamlit Ready)
 ├── README.md                   # Dokumentasi repositori proyek DEDIKAT (Berkas ini)
 ├── streamlit_app.py            # Berkas alternatif web berbasis Streamlit (Deployment Ready)
 ├── train.ipynb                 # Jupyter Notebook proses pelatihan YOLOv8
@@ -100,7 +130,7 @@ Susunan folder dan file di dalam repositori GitHub ini telah dirapikan agar meme
 ## 🛠️ Cara Instalasi
 
 ### Catatan Penting Dependensi (*Dependencies Note*)
-Proyek ini membutuhkan pustaka pengolahan citra medis (**OpenCV-Python** dan **Pillow**) serta kerangka kerja deep learning (**PyTorch** dan **Ultralytics**). Jika Anda menggunakan Windows, pastikan driver GPU CUDA telah terinstal jika ingin mengaktifkan akselerasi kartu grafis NVIDIA Anda.
+Proyek ini membutuhkan pustaka pengolahan citra medis (**OpenCV-Python-Headless** dan **Pillow**) serta kerangka kerja deep learning (**PyTorch** dan **Ultralytics**). Jika Anda menggunakan Windows, pastikan driver GPU CUDA telah terinstal jika ingin mengaktifkan akselerasi kartu grafis NVIDIA Anda.
 
 Pilihlah salah satu opsi pemasangan di bawah ini:
 
