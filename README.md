@@ -19,7 +19,7 @@ DEDIKAT (Deteksi Dini Katarak) adalah sistem kecerdasan buatan (*Artificial Inte
 Proyek DEDIKAT dikembangkan menggunakan dataset **Cataract Eye Data** yang bersumber dari platform Kaggle:
 * **Tautan Dataset**: [Kaggle - Cataract Eye Data by suyog17](https://www.kaggle.com/datasets/suyog17/cataracteyedata)
 * **Penjelasan Dataset**:
-  Dataset ini berisi kumpulan gambar mata berkualitas tingi yang terbagi menjadi dua kelas utama secara seimbang:
+  Dataset ini berisi kumpulan gambar mata berkualitas tinggi yang terbagi menjadi dua kelas utama secara seimbang:
   1. **Cataract (Mata Positif Katarak)**: Menampilkan citra mata dengan tingkat kekeruhan patologis yang bervariasi pada bagian lensa pupil.
   2. **Normal (Mata Sehat)**: Menampilkan kondisi mata sehat dengan lensa pupil yang jernih dan bebas dari tanda-tanda opasitas.
   Dataset ini digunakan untuk melatih model deteksi objek (anotasi bounding box melokalisasi area pupil katarak) serta model klasifikasi citra digital guna membedakan karakteristik mata sehat vs katarak.
@@ -100,67 +100,36 @@ Susunan folder dan file di dalam repositori GitHub ini telah dirapikan agar meme
 
 ---
 
-## 🛠️ Cara Instalasi
+## 💻 Cara Menjalankan Proyek (Setup Lokal)
 
-### Catatan Penting Dependensi (*Dependencies Note*)
-Proyek ini membutuhkan pustaka pengolahan citra medis (**OpenCV-Python-Headless** dan **Pillow**) serta kerangka kerja deep learning (**PyTorch** dan **Ultralytics**). Jika Anda menggunakan Windows, pastikan driver GPU CUDA telah terinstal jika ingin mengaktifkan akselerasi kartu grafis NVIDIA Anda.
+### 1. Kloning repositori ini:
+```bash
+git clone https://github.com/brianaryansyah/Project_Dedikat.git
+cd Project_Dedikat
+```
 
-Pilihlah salah satu opsi pemasangan di bawah ini:
+### 2. Persiapkan environment (Conda disarankan):
+```bash
+conda create -n sicasa_gpu python=3.10 -y
+conda activate sicasa_gpu
+pip install -r requirements.txt
+```
 
-### Opsi A: Menggunakan PIP (Python Package Installer)
-Jalankan perintah ini di dalam PowerShell atau Command Prompt Anda:
+### 3. Menjalankan Aplikasi Web:
 
-1. Buat dan aktifkan virtual environment (sangat direkomendasikan):
-   ```bash
-   python -m venv venv
-   # Mengaktifkan di Windows
-   .\venv\Scripts\Activate.ps1
-   # Mengaktifkan di Linux/macOS
-   source venv/bin/activate
-   ```
-2. Pasang semua pustaka yang dibutuhkan:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Opsi B: Menggunakan Conda (Anaconda / Miniconda)
-Jika Anda menggunakan lingkungan Conda (sangat disarankan untuk pengguna kartu grafis GPU):
-
-1. Buat environment baru dengan Python versi 3.10:
-   ```bash
-   conda create -n sicasa_gpu python=3.10 -y
-   conda activate sicasa_gpu
-   ```
-2. Pasang PyTorch berkemampuan CUDA (contoh untuk CUDA 11.8):
-   ```bash
-   conda install pytorch torchvision pytorch-cuda=11.8 -c pytorch -c nvidia -y
-   ```
-3. Pasang dependensi lainnya:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
----
-
-## 🏃 Running the Pipeline (CLI)
-
-Gunakan baris perintah berikut untuk menjalankan aplikasi DEDIKAT secara lokal di komputer Anda:
-
-### 1. Menjalankan Versi Flask (Tampilan Premium & Custom)
-Jalankan file server utama Flask:
+#### Opsi A: Menjalankan Versi Flask (Tampilan Premium & Custom)
+Pastikan Anda berada di direktori root `Project_Dedikat`, lalu eksekusi perintah berikut:
 ```bash
 python app/app.py
 ```
-Setelah server aktif, buka web browser Anda dan akses tautan berikut:
-**[http://localhost:5000](http://localhost:5000)**
+Aplikasi secara otomatis akan terbuka di browser Anda melalui **[http://localhost:5000](http://localhost:5000)**
 
-### 2. Menjalankan Versi Streamlit (Dasbor Alternatif)
-Jalankan file Streamlit menggunakan perintah berikut:
+#### Opsi B: Menjalankan Versi Streamlit (Dasbor Alternatif)
+Pastikan Anda berada di direktori root `Project_Dedikat`, lalu eksekusi perintah berikut:
 ```bash
-python -m streamlit run streamlit_app.py
+streamlit run streamlit_app.py
 ```
-Aplikasi akan otomatis terbuka pada halaman browser baru di alamat:
-**[http://localhost:8501](http://localhost:8501)**
+Aplikasi secara otomatis akan terbuka di browser Anda melalui **[http://localhost:8501](http://localhost:8501)**
 
 ---
 
@@ -190,16 +159,17 @@ Menampilkan peta Grad-CAM, interpretasi piksel LIME, Saliency Maps, serta reduks
 
 ---
 
-## 🧱 Teknologi yang Digunakan
+## 🛠️ Teknologi yang Digunakan
 
-* **Backend Framework**: Flask (Python)
-* **Frontend Framework / UI**: Vanilla HTML5, CSS3 (Premium Glassmorphism), dan JavaScript ES6 (Custom Slider & counter)
-* **Dasbor Alternatif**: Streamlit (Python)
-* **Model Deep Learning**: YOLOv8s (Ultralytics) dan ResNet-50 (PyTorch)
-* **Computer Vision**: OpenCV (CV2) dan Pillow (PIL)
-* **Analisis & Eksplorasi Data**: NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn
-* **Akselerasi Perangkat Keras**: NVIDIA CUDA Toolkit & PyTorch GPU
-* **Manajemen Repositori**: Git & GitHub
+| Kategori | Teknologi |
+| --- | --- |
+| **Bahasa Pemrograman** | Python 3.10 |
+| **Data Manipulation** | Pandas, NumPy |
+| **Data Visualization** | Seaborn, Matplotlib |
+| **Machine & Deep Learning** | PyTorch, Ultralytics YOLOv8s, ResNet-50, Scikit-Learn (KNN, Random Forest) |
+| **Web Application Framework** | Flask (Premium Custom HTML/CSS/JS), Streamlit |
+| **Web Deployment** | Streamlit Community Cloud |
+| **Environment Tools** | Conda, Jupyter Notebook, Visual Studio Code |
 
 ---
 
