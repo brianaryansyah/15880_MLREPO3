@@ -1,5 +1,5 @@
 """
-SiCASA - Sistem Deteksi Dini Katarak
+DEDIKAT - Sistem Deteksi Dini Katarak
 Flask Web Application Backend
 """
 
@@ -25,7 +25,7 @@ import cv2
 # Konfigurasi App
 # ──────────────────────────────────────────────
 app = Flask(__name__)
-app.secret_key = 'sicasa-secret-key-2025'
+app.secret_key = 'dedikat-secret-key-2026'
 
 BASE_DIR       = Path(__file__).parent
 UPLOAD_FOLDER  = BASE_DIR / 'static' / 'uploads'
@@ -40,7 +40,7 @@ UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 # Logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('SiCASA')
+logger = logging.getLogger('DEDIKAT')
 
 # ──────────────────────────────────────────────
 # Load Model YOLOv8
@@ -156,27 +156,26 @@ def run_inference(image_path: str, conf: float = 0.25, iou: float = 0.45) -> dic
         detections.sort(key=lambda x: x['confidence'], reverse=True)
         
         # Status keseluruhan
-        if len(detections) == 0:
+        cataract_detections = [
+            d for d in detections
+            if 'katarak' in d['class_name'].lower() or 'cataract' in d['class_name'].lower()
+        ]
+        
+        if len(cataract_detections) == 0:
             overall_status = 'normal'
             status_text    = 'Tidak Terdeteksi Katarak'
             status_desc    = 'Berdasarkan analisis AI, tidak ditemukan indikasi katarak pada gambar mata ini.'
-            status_color   = '#22c55e'
+            status_color   = '#10b981'
         else:
-            # Cek apakah ada kelas 'katarak' atau 'cataract'
-            cataract_found = any(
-                'katarak' in d['class_name'].lower() or
-                'cataract' in d['class_name'].lower()
-                for d in detections
-            )
             overall_status = 'detected'
-            status_text    = f'{len(detections)} Objek Terdeteksi'
+            status_text    = f'{len(cataract_detections)} Objek Terdeteksi'
             status_desc    = 'Terdeteksi indikasi katarak. Segera konsultasikan dengan dokter mata!'
             status_color   = '#ef4444'
         
         return {
             'success'        : True,
             'detections'     : detections,
-            'num_detections' : len(detections),
+            'num_detections' : len(cataract_detections),
             'result_image'   : result_b64,
             'inference_time' : round(inference_time, 1),
             'overall_status' : overall_status,
@@ -277,7 +276,7 @@ def uploaded_file(filename):
 # ──────────────────────────────────────────────
 if __name__ == '__main__':
     print('='*60)
-    print('  🚀 SiCASA — Sistem Deteksi Dini Katarak')
+    print('  🚀 DEDIKAT — Sistem Deteksi Dini Katarak')
     print('='*60)
     print(f'  Model   : {MODEL_STATUS}')
     print(f'  URL     : http://localhost:5000')

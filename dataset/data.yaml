@@ -1,4 +1,4 @@
-path: D:/UDINUS/SEMESTER 4/PEMBELAJARAN MESIN/SiCASA/dataset
+path: D:/UDINUS/SEMESTER 4/PEMBELAJARAN MESIN/SiCASA_Project/1. SiCASA/dataset
 train: images/train
 val: images/val
 test: images/test
