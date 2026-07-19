@@ -1,0 +1,152 @@
+================================================================================
+           NASKAH PRESENTASI SIDANG / DEMONSTRASI PROYEK DEDIKAT
+================================================================================
+Nama       : Brian Aryansyah Pamungkas
+NIM        : A11.2024.15880
+Kelompok   : A11.4405
+Estimasi   : +/- 7 Menit (Tempo Sedang, Tenang, dan Tegas)
+Topik      : Deteksi Dini Penyakit Katarak Berbasis Analisis Citra Retina Digital
+================================================================================
+
+[ ⏱️ Menit 0.00 – 1.00: Pembukaan & Latar Belakang ]
+(Instruksi: Buka Halaman Utama Web DEDIKAT di port http://localhost:5000)
+
+"Selamat pagi/siang Bapak dan Ibu Dosen Penguji yang saya hormati.
+
+Perkenalkan, nama saya Brian Aryansyah Pamungkas, dengan NIM A11.2024.15880 dari 
+kelompok A11.4405. Pada kesempatan hari ini, saya akan mendemonstrasikan proyek 
+akhir pemelajaran mesin saya yang berjudul DEDIKAT: Deteksi Dini Penyakit 
+Katarak Berbasis Analisis Citra Retina Digital.
+
+Latar belakang proyek ini berakar pada tingginya angka kebutaan akibat katarak 
+di Indonesia, sementara ketersediaan dokter spesialis mata sangat terbatas di 
+daerah satelit. DEDIKAT hadir sebagai asisten penapisan (screening tool) digital 
+berbasis kecerdasan buatan medis untuk melokalisasi area katarak dan memberikan 
+rujukan dini secara cepat, presisi, dan transparan."
+
+
+[ ⏱️ Menit 1.00 – 2.30: Dataset & Arsitektur Sistem AI ]
+(Instruksi: Arahkan kursor dan klik Tab 'Dashboard EDA' pada web)
+
+"Proyek ini dikembangkan menggunakan dataset publik 'Cataract Eye Data' yang 
+bersumber dari Kaggle. Sebelum melatih model, saya melakukan eksplorasi data 
+(EDA) untuk memverifikasi keseimbangan sebaran kelas, dimensi citra, serta 
+kerapatan koordinat lesi spasial lensa pupil yang dapat Bapak/Ibu lihat pada 
+tab dasbor berikut. 
+
+Untuk arsitektur AI, DEDIKAT mengintegrasikan dua pendekatan deep learning:
+1. YOLOv8s: Digunakan untuk Object Detection, bertugas mendeteksi pupil dan 
+   melokalisasi koordinat kekeruhan lensa mata dengan bounding box.
+2. ResNet-50: Digunakan sebagai model baseline Image Classification untuk 
+   memberikan akurasi diagnosis end-to-end yang kuat.
+Sebagai pembanding kinerja, saya juga melatih model mesin konvensional seperti 
+K-Nearest Neighbors (KNN) dan Random Forest."
+
+
+[ ⏱️ Menit 2.30 – 4.00: Poin Riset Utama – Keunggulan Grad-CAM (XAI) ]
+(Instruksi: Arahkan kursor dan klik Tab 'Interpretasi Hasil (XAI)' pada web)
+
+"Bapak/Ibu Dosen, poin riset utama yang saya tekankan dalam proyek ini adalah 
+aspek transparansi medis melalui Explainable AI (XAI). Model neural network 
+sering kali dikritik sebagai 'black-box' atau kotak hitam yang tidak diketahui 
+alasan di balik keputusan klasifikasinya. Untuk mengatasi hal ini, saya 
+mengimplementasikan beberapa teknik interpretasi visual.
+
+Di sini saya ingin menggarisbawahi keunggulan Grad-CAM (Gradient-weighted Class 
+Activation Mapping) yang saya gunakan. Teknik Grad-CAM ini secara konsep setara 
+dengan LIME atau SHAP, yaitu bertujuan menjelaskan keputusan model. Namun, 
+Grad-CAM jauh lebih superior dan dirancang secara khusus untuk arsitektur Deep 
+Learning berbasis citra (CNN) seperti ResNet-50.
+
+Mengapa demikian? 
+* LIME dan SHAP bersifat 'model-agnostic'. Mereka bekerja dengan cara melakukan 
+  perturbasi (merusak/mengacak) piksel gambar secara berulang-ulang, yang 
+  membutuhkan waktu komputasi sangat lama dan kurang akurat dalam menangkap 
+  fitur spasial hierarki tinggi pada citra.
+* Grad-CAM, di sisi lain, bekerja langsung dengan mengambil nilai gradien kelas 
+  target yang mengalir ke lapisan konvolusional terakhir (last conv layer) 
+  dari ResNet-50. Hasilnya adalah peta aktivasi visual (heatmap) yang sangat 
+  presisi, menunjukkan secara instan di mana lensa pupil yang mengalami 
+  kekeruhan berada. Hal ini membuktikan secara klinis bahwa model saya mengambil 
+  keputusan berdasarkan deteksi opasitas lensa mata, bukan dari bias latar 
+  belakang foto."
+
+
+[ ⏱️ Menit 4.00 – 5.30: Demonstrasi Deteksi & Fitur Interaktif Web ]
+(Instruksi: Kembali ke Tab 'Deteksi AI' - Upload salah satu Gambar Sampel)
+
+"Mari kita demonstrasikan proses penapisan katarak secara langsung. Di panel 
+kiri, saya telah menyediakan fitur uji cepat menggunakan sampel mata katarak 
+dan normal. Ketika saya menekan tombol 'Mulai Analisis Medis', sistem akan 
+melakukan pemrosesan dengan visualisasi radar scanning interaktif.
+
+Setelah inferensi selesai, kita bisa melihat fitur utama DEDIKAT, yaitu 
+Interactive Before/After Slider. Penguji dapat menggeser pembatas garis biru 
+ini secara interaktif untuk membandingkan lensa mata asli pasien (di sisi kiri) 
+dan hasil anotasi deteksi AI (di sisi kanan). 
+
+Sistem secara cerdas menyaring kotak deteksi. Jika terdeteksi indikasi katarak, 
+status akan menyala merah: Terdeteksi Katarak (Positif), lengkap dengan rincian 
+koordinat bounding box dan rekomendasi medis rujukan dokter spesialis. Namun 
+jika mata normal (seperti sampel normal yang saya klik ini), sistem akan secara 
+akurat menampilkan status hijau: Tidak Terdeteksi Katarak (Negatif) meskipun AI 
+mendeteksi pupil normal."
+
+
+[ ⏱️ Menit 5.30 – 6.30: Evaluasi Performa & Cetak Laporan ]
+(Instruksi: Klik tombol 'Cetak Laporan Medis' atau Ctrl+P di halaman deteksi)
+
+"Untuk menunjang administrasi rumah sakit, aplikasi ini dilengkapi fitur Ekspor 
+Laporan Medis. Saat tombol cetak diklik, halaman web akan diformat ulang secara 
+otomatis menggunakan CSS print-layout menjadi sebuah dokumen laporan klinis 
+resmi yang rapi, lengkap dengan Kop Surat DEDIKAT, tabel deteksi, rekomendasi 
+medis, serta lembar tanda tangan dokter spesialis.
+
+Pada aspek performa yang dapat dilihat pada tab 'Evaluasi Model', model baseline 
+ResNet-50 kami berhasil mencapai akurasi sebesar 98.73% dengan nilai AUC-ROC 
+mencapai 99.73%, membuktikan ketangguhan sistem ini secara statistik."
+
+
+[ ⏱️ Menit 6.30 – 7.00: Penutup ]
+(Instruksi: Arahkan kursor kembali ke Tab Utama Web)
+
+"Sebagai kesimpulan, DEDIKAT berhasil menjembatani teknologi Deep Learning dan 
+kepatuhan medis klinis. Melalui visualisasi Grad-CAM, sistem ini memberikan 
+tingkat transparansi tinggi yang sangat dibutuhkan dalam diagnosis kesehatan.
+
+Demikian presentasi demonstrasi proyek DEDIKAT dari saya. Terima kasih atas 
+perhatian Bapak dan Ibu Dosen Penguji. Sesi demonstrasi saya akhiri, dan saya 
+sangat terbuka untuk sesi tanya jawab."
+
+
+================================================================================
+                        💡 TIPS SUKSES SIDANG & DEMO
+================================================================================
+
+1. Penekanan Grad-CAM (Pada Menit 2.30):
+   * Arahkan kursor Anda ke area berwarna merah pekat pada gambar heatmap 
+     Grad-CAM di layar.
+   * Katakan: "Bisa dilihat di layar, warna merah pekat terfokus tepat pada 
+     bagian keruh di tengah pupil. Ini membuktikan Grad-CAM bekerja secara 
+     presisi melokalisasi lesi tanpa terdistraksi latar belakang."
+
+2. Demonstrasi Slider (Pada Menit 4.00):
+   * Saat memamerkan Before/After Slider, geser gagang pembatas biru ke kiri 
+     dan kanan secara perlahan 2-3 kali di depan dosen penguji.
+   * Ini membuktikan antarmuka Anda sangat dinamis dan interaktif.
+
+3. Pacing & Artikulasi:
+   * Bicaralah dengan tempo santai, tidak terburu-buru, dan gunakan intonasi 
+     yang jelas (artikulasi vokal yang kuat).
+   * Tarik napas dalam-dalam sebelum mulai menjelaskan Grad-CAM karena bagian 
+     ini adalah poin riset utama yang menaikkan nilai akademis Anda.
+
+4. Penanganan Pertanyaan Dosen (Q&A):
+   * Jika dosen bertanya: "Kenapa tidak pakai SHAP/LIME saja?"
+     Jawaban Anda: "SHAP dan LIME sangat bagus untuk data tabular. Namun untuk 
+     data citra medis berbasis CNN, LIME/SHAP membutuhkan waktu komputasi yang 
+     sangat lama karena mereka membuat ribuan perturbasi piksel secara acak. 
+     Sedangkan Grad-CAM dirancang khusus untuk CNN karena menggunakan gradien 
+     dari layer konvolusi terakhir, menghasilkan visualisasi yang instan dan 
+     jauh lebih presisi secara spasial."
+================================================================================
