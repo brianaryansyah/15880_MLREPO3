@@ -14,6 +14,13 @@ DEDIKAT (Deteksi Dini Katarak) adalah sistem kecerdasan buatan (*Artificial Inte
 
 ---
 
+## 🌐 Akses Aplikasi Online (Live Demo)
+
+Aplikasi DEDIKAT versi dasbor Streamlit telah dideploy secara online dan dapat langsung diakses oleh publik atau penguji melalui tautan berikut:
+👉 **[DEDIKAT Web App di Streamlit Cloud](https://dedikat-deteksidinikatarak-bybrian.streamlit.app/)**
+
+---
+
 ## 📊 Dataset & Eksplorasi Data
 
 Proyek DEDIKAT dikembangkan menggunakan dataset **Cataract Eye Data** yang bersumber dari platform Kaggle:
@@ -108,24 +115,44 @@ git clone https://github.com/brianaryansyah/Project_Dedikat.git
 cd Project_Dedikat
 ```
 
-### 2. Persiapkan environment (Conda disarankan):
+### 2. Persiapkan Environment & Instalasi Pustaka
+Anda bisa menggunakan **Conda** (direkomendasikan) atau **PIP** untuk mengelola dependensi program:
+
+#### Pilihan A: Menggunakan Conda (Direkomendasikan untuk GPU/CUDA)
 ```bash
+# Membuat environment Python 3.10
 conda create -n sicasa_gpu python=3.10 -y
 conda activate sicasa_gpu
+
+# Pasang pustaka dependensi
 pip install -r requirements.txt
 ```
 
-### 3. Menjalankan Aplikasi Web:
+#### Pilihan B: Menggunakan PIP (Virtual Environment Python Biasa)
+```bash
+# Membuat venv baru
+python -m venv venv
+
+# Mengaktifkan venv (Windows)
+.\venv\Scripts\Activate.ps1
+# Mengaktifkan venv (Linux/macOS)
+source venv/bin/activate
+
+# Pasang pustaka dependensi
+pip install -r requirements.txt
+```
+
+### 3. Menjalankan Aplikasi Secara Lokal:
 
 #### Opsi A: Menjalankan Versi Flask (Tampilan Premium & Custom)
-Pastikan Anda berada di direktori root `Project_Dedikat`, lalu eksekusi perintah berikut:
+Pastikan Anda berada di direktori root `Project_Dedikat`, lalu jalankan perintah:
 ```bash
 python app/app.py
 ```
 Aplikasi secara otomatis akan terbuka di browser Anda melalui **[http://localhost:5000](http://localhost:5000)**
 
 #### Opsi B: Menjalankan Versi Streamlit (Dasbor Alternatif)
-Pastikan Anda berada di direktori root `Project_Dedikat`, lalu eksekusi perintah berikut:
+Pastikan Anda berada di direktori root `Project_Dedikat`, lalu jalankan perintah:
 ```bash
 streamlit run streamlit_app.py
 ```
