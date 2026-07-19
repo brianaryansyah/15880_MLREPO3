@@ -52,7 +52,7 @@ app/static/uploads/*
 !app/static/uploads/.gitkeep
 
 # Machine Learning Training Outputs & Cache
-runs/
+/runs/
 dataset/
 *.cache
 

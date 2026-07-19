@@ -1,0 +1,13 @@
+============================================================
+  DATA QUALITY & EDA REPORT — SiCASA Dataset
+============================================================
+  Total Images     : 3144
+  Total Labels     : 3144
+  Splits           : Train=2200, Val=629, Test=315
+  Duplicate Groups : 12
+  Size Outliers    : 0
+  Label Issues     : 0
+  Dimensions       : {(640, 640)}
+  File Size Range  : 15.0KB - 129.7KB
+  Annotations      : Cataract=1686, Normal=1500
+============================================================

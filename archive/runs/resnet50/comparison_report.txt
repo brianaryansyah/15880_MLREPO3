@@ -1,0 +1,33 @@
+======================================================================================================
+  MODEL COMPARISON: YOLOv8s vs ResNet50 vs KNN vs Random Forest
+======================================================================================================
+
+Metric                         YOLOv8s            ResNet50           KNN                Random Forest     
+------------------------------------------------------------------------------------------------------
+Task Type                      Object Detection   Image Classification
+Input                          Image + BBox       Image             
+Output                         BBox + Label       Class Prob.       
+
+Precision                      97.60%             98.69%             99.02%             99.02%            
+Recall                         95.66%             98.77%             99.06%             99.06%            
+Accuracy                       96.83%             98.73%             99.05%             99.05%            
+F1-Score                       96.82%             98.73%             99.04%             99.04%            
+AUROC                          68.76%             99.73%             99.99%             99.92%            
+mAP@50                         98.03%             N/A                N/A                N/A               
+mAP@50:95                      65.56%             N/A                N/A                N/A               
+MCC                            N/A                97.46%             98.09%             98.09%            
+Cohen Kappa                    N/A                97.45%             98.09%             98.09%            
+Log Loss                       N/A                7.07%              1.32%              3.47%             
+Inference Time                 29.3 ms            8.5 ms             0.71 ms            0.26 ms           
+Model Size                     64.0 MB            90.0 MB            22.12 MB           0.56 MB           
+
+======================================================================
+  INTERPRETABILITY METHODS (ResNet50 only)
+======================================================================
+  1. Grad-CAM           — Class activation heatmap
+  2. Saliency Map       — Pixel-level gradient importance
+  3. Feature Maps       — Intermediate conv layer activations
+  4. LIME               — Local interpretable explanations
+  5. t-SNE Embedding    — 2D feature visualization
+  6. PCA Embedding      — 2D principal component analysis
+======================================================================

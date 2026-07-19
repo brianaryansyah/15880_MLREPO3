@@ -1,0 +1,19 @@
+{
+  "model": "ResNet50 (pretrained IMAGENET1K_V1)",
+  "task": "Binary Image Classification (Cataract vs Normal)",
+  "epochs": 30,
+  "batch_size": 32,
+  "lr_phase1": 0.001,
+  "lr_phase2": 0.0001,
+  "optimizer": "AdamW (weight_decay=1e-4)",
+  "scheduler": "CosineAnnealingLR",
+  "loss": "CrossEntropyLoss",
+  "image_size": 224,
+  "early_stopping_patience": 7,
+  "seed": 42,
+  "best_val_acc": "99.36%",
+  "best_epoch": 7,
+  "test_accuracy": "99.05%",
+  "test_f1_macro": "99.04%",
+  "test_auroc_macro": "99.95%"
+}
